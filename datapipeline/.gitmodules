@@ -1,0 +1,8 @@
+[submodule "submodules/hloc"]
+	path = submodules/hloc
+	url = https://github.com/zc-alexfan/Hierarchical-Localization.git
+	branch = 428dd10
+[submodule "submodules/DSINE"]
+	path = submodules/DSINE
+	url = https://github.com/mizeller/DSINE.git
+

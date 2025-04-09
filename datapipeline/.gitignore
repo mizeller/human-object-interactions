@@ -1,0 +1,16 @@
+/data/*
+!/data/test_data/
+
+# download MANO models from official source
+body_models/
+
+# remove compiled bytecode files from source control
+*.pyc
+
+tmp/
+.cache/
+.wget-hsts
+.gradio_cache/
+.gradio
+.nv
+.u2net

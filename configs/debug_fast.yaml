@@ -1,0 +1,117 @@
+seed: 1
+eval: false
+exp_name: "debug"
+debug: true
+mode: "ho"
+seq: "demo"
+sample: 50 # sample every n-th frame
+train:
+  iterations: 100
+  verbose: true
+  # checkpoints
+  save_ckpt: true # [bool], save .pth for all available gaussian models
+  save_ckpt_interval: 10_000
+  # animation
+  save_animation: true # flag, to enable animation saving...
+  anim_interval: 50_000 # save animation every anim_interval frames
+  anim_frames: null # 10
+  # training/debug
+  save_training: true # [bool], create a training video in the end & delete individual frames
+  dbg_interval: 10 # save training/debug visuals every dbg_interval frames
+  sample: 2 # use the same data sample to visualize the training!
+  remove_frames: true # [bool], delete the training/animation frames after saving video
+loss:
+  # ~~~~~~~~~~~~~~~~~~~~ shared losses ~~~~~~~~~~~~~~~~~~~~
+  l1_w: 0.8
+  ssim_w: 0.2
+  lpips_w: 1.0
+  mask_w: 100
+  normal_w: 1.0
+  normal_start_iter: 60
+  distortion_w: 1.0
+  distortion_start_iter: 40
+  # ~~~~~~~~~~~~~~~~~~~~ DN-splatter ~~~~~~~~~~~~~~~~~~~~
+  dn_normal_w: 0.0 # 1.0 
+  dn_normal_start_iter: 30
+  dn_normal_smooth_w: 0.0 # 1.0
+  dn_normal_smooth_start_iter: 30
+  # ~~~~~~~~~~~~~~~~~~~~ hand losses ~~~~~~~~~~~~~~~~~~~~
+  scale_w: 100_000
+  threshold_scale: 0.275
+  xyz_w: 100
+  threshold_xyz: 0.5
+  normal_align_w: 10.0
+  vert_offset_w: 10.0
+  laplacian_w: 5.0
+  # ~~~~~~~~~~~~~~~~~~~~ object losses ~~~~~~~~~~~~~~~~~~~~
+  isotropic_reg_w: 10.0
+  # ~~~~~~~~~~~~~~~~~~~~ 3D losses [disabled] ~~~~~~~~~~~~~~~~~~~~
+  smoothness_w: 0
+  contact_w: 0
+  approx_depth_w: 0
+  threshold_depth: 0
+object:
+  ckpt: null
+  sh_degree: 3
+  prune_min_opacity: 0.005
+  max_n_gs: 1_000_000 # 94_608
+  opacity_reset_interval: 60000
+  opt:
+    rotation: true
+    translation: true
+    scale: true
+  lr:
+    percent_dense: 0.01
+    position_init: 0.005
+    position_final: 5e-05
+    position_delay_mult: 0.01
+    position_max_steps: 600000
+    opacity: 0.05
+    scaling: 0.017
+    rotation: 0.001
+    feature: 0.0025
+    obj_rot: 0.00001
+    obj_trans: 0.00001
+    obj_scale: 0.00001
+  densify:
+    start: 10
+    end: 60
+    interval: 20
+    grad_thresh: 0.0002
+human:
+  ckpt: null
+  sh_degree: 0
+  n_subdivision: 2
+  normal_displacement: false
+  canon_pose_type: "flat_hand"
+  prune_min_opacity: 0.005
+  densify_extent: 1.0
+  max_n_gs: 390_000
+  opacity_reset_interval: 3000
+  opt:
+    smplx_betas: False
+    smplx_transl: False # root joint
+    smplx_global_orient: False # root joint
+    smplx_body_pose: False # body joints
+    smplx_left_hand_pose: False
+    smplx_right_hand_pose: False
+    vert_offsets: False
+  lr:
+    position_init: 0.005
+    position_final: 5e-05
+    position_delay_mult: 0.01
+    position_max_steps: 600000
+    # gaussian appearance lr
+    opacity: 0.05
+    scaling: 0.017
+    rotation: 0.001
+    feature: 0.0025
+    human_spatial: 1.0
+    vert_offsets: 0.000001
+    lbs_weights: 0.0
+
+    smplx_betas: 0.00001
+    smplx_transl: 0.00001
+    smplx_global_orient: 0.00001
+    smplx_body_pose: 0.00001
+    smplx_hand_pose: 0.00001

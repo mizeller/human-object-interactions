@@ -1,0 +1,52 @@
+evo==1.29.0
+# lap==0.4.0
+PuLP==2.9.0
+gdown==5.2.0
+einops==0.8.0
+open3d==0.18.0
+loguru==0.7.2
+awscli==1.33.26
+plyfile==1.0.3
+mmengine==0.10.4
+pyrender==0.1.45
+omegaconf==2.3.0
+# cython-bbox==0.1.5
+pycocotools==2.0.8
+timm==0.6.7
+supervision==0.22.0
+scikit-image==0.24.0
+segment-anything==1.0
+pytorch-minimize==0.0.2
+pytorch-lightning==2.4.0
+opencv-python-headless==4.10.0.84
+pyequilib==0.3.0
+yacs==0.1.8
+tabulate==0.9.0
+sentry-sdk==2.12.0
+imageio[ffmpeg]
+prettytable
+albumentations
+ffmpeg==1.4
+openpyxl==3.1.5
+fvcore
+filterpy==1.4.5
+mmcv-lite==2.2.0
+smplx==0.1.28
+fairscale==0.4.13
+
+# python 3.11 fix: https://github.com/mattloper/chumpy/pull/59#issuecomment-2308925784
+git+https://github.com/mattloper/chumpy@9b045ff5d6588a24a0bab52c83f032e2ba433e17
+# git+https://github.com/mattloper/chumpy.git
+
+# additional packages for gaussian splatting pipeline
+gsplat==1.4.0
+comet_ml==3.47.0
+easydict==1.13
+lpips==0.1.4
+roma==1.5.0
+pygit2==1.13.3
+python-dotenv==1.0.1
+
+# additional packages for data pipeline
+gradio==5.14.0 # required for SAM2 prompts
+geffnet==1.0.2 # required for DSINE

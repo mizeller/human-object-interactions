@@ -1,0 +1,131 @@
+seed: 1
+eval: false # true
+debug: false # true
+exp_name: "itw_michel" # comet project name
+mode: "ho"
+seq: itw_michel # "arctic_s03_mixer_crop"
+  # [
+  #   "arctic_s03_box_crop",
+  #   "arctic_s03_capsulemachine_crop",
+  #   "arctic_s03_espressomachine_crop",
+  #   "arctic_s03_ketchup_crop",
+  #   "arctic_s03_laptop_crop",
+  #   "arctic_s03_microwave_crop",
+  #   "arctic_s03_mixer_crop",
+  #   "arctic_s03_notebook_crop",
+  #   "arctic_s03_waffleiron_crop",
+  # ]
+sample: null
+train:
+  iterations: 2_500 # 10_000
+  verbose: false
+  # checkpoints
+  save_ckpt: true # [bool], save .pth for all available gaussian models
+  save_ckpt_interval: 10_000
+  # animation
+  save_animation: false # flag, to enable animation saving...
+  anim_interval: 5_000 # save animation every anim_interval frames
+  anim_frames: null # [int], in debug mode, just create an animation w/ anim_frames frames
+  # training/debug
+  save_training: true # [bool], create a training video in the end & delete individual frames
+  dbg_interval: 100 # save training/debug visuals every dbg_interval frames
+  sample: 10 # use the same data sample to visualize the training!
+  remove_frames: true # [bool], delete the training/animation frames after saving video
+loss:
+  dn_normal_w: 1
+  dn_normal_start_iter: 2_000
+  dn_normal_smooth_w: 1.0
+  dn_normal_smooth_start_iter: 2_000
+  # ~~~~~~~~~~~~~~~~~~~~ shared losses ~~~~~~~~~~~~~~~~~~~~
+  # RGB
+  l1_w: 0.8
+  ssim_w: 0.2
+  lpips_w: 1.0
+  mask_w: 100000 # penalize Δ(gt_msk, pred_msk)
+  # ~~~~~~~~~~~~~~~~~~~~ object losses ~~~~~~~~~~~~~~~~~~~~
+  isotropic_reg_w: 1_000
+  normal_w: 1.0 # src: https://github.com/nerfstudio-project/gsplat/blob/2d6a967f92187daaa19f198613a7309e4d1a00dc/examples/simple_trainer_2dgs.py#L607
+  normal_start_iter: 2_000
+  distortion_w: 1.0 # src: https://github.com/nerfstudio-project/gsplat/blob/2d6a967f92187daaa19f198613a7309e4d1a00dc/examples/simple_trainer_2dgs.py#L622
+  distortion_start_iter: 2_000
+  # ~~~~~~~~~~~~~~~~~~~~ hand losses ~~~~~~~~~~~~~~~~~~~~
+  scale_w: 10_000 # don't let gaussians grow too large relative to bound face
+  threshold_scale: 0.275
+  xyz_w: 100 # don't let gaussians detach too far from bound face
+  threshold_xyz: 0.5
+  normal_align_w: 10.0 # align mesh normals w/ gaussian normals
+  vert_offset_w: 10.0 # don't let vertex offsets grow too large
+  laplacian_w: 5.0 # & ensure smooth mesh when vert_offsets are enabled
+  # ~~~~~~~~~~~~~~~~~~~~ 3D losses [disabled] ~~~~~~~~~~~~~~~~~~~~
+  smoothness_w: 0 # inspired by: https://github.com/zc-alexfan/hold/blob/31dd6128215ff11a966fc8893dff9a25f3cf16c2/generator/src/alignment/pl_module/ho.py#L57
+  contact_w: 0
+  approx_depth_w: 0 # 10000 # the z-mean of H/O vertices should be in the same depth range
+  threshold_depth: 0 # the z-means should be withing +- epsilon_depth of each other...
+object:
+  name: "object_gs"
+  ckpt: logs/itw_michel/20250303_194035_itw_michel/ckpt/object_itw_michel_final.pth
+  sh_degree: 3
+  prune_min_opacity: 0.005
+  max_n_gs: 72_000 # determined through trial&error for this sequence...
+  opacity_reset_interval: 60000
+  opt:
+    rotation: true # optimize object global orientation (i.e rotation)
+    translation: true # optimize object translation
+    scale: true # optimize object scale
+  lr:
+    percent_dense: 0.01
+    position_init: 0.005
+    position_final: 5e-05
+    position_delay_mult: 0.01
+    position_max_steps: 600_000
+    # object appearance lr
+    opacity: 0.05
+    scaling: 0.017 # 0.005
+    rotation: 0.001
+    feature: 0.0025
+    # object pose lr
+    obj_rot: 0.0001
+    obj_trans: 0.0001
+    obj_scale: 0.0001
+  densify:
+    start: 1_000
+    end: 15_000
+    interval: 500
+    grad_thresh: 0.0002
+human:
+  name: "mano"
+  ckpt: null
+  sh_degree: 0 # TODO: implement SH degree = 3 for hand
+  n_subdivision: 2
+  normal_displacement: false
+  canon_pose_type: "flat_hand"
+  prune_min_opacity: 0.005
+  densify_extent: 1.0
+  max_n_gs: 390_000
+  opacity_reset_interval: 3000
+  opt:
+    smplx_betas: True
+    smplx_transl: False # root joint
+    smplx_global_orient: False # root joint
+    smplx_body_pose: True # body joints
+    smplx_left_hand_pose: False
+    smplx_right_hand_pose: False
+    vert_offsets: False
+  lr:
+    position_init: 0.005
+    position_final: 5e-05
+    position_delay_mult: 0.01
+    position_max_steps: 600000
+    # gaussian appearance lr
+    opacity: 0.05
+    scaling: 0.017
+    rotation: 0.001
+    feature: 0.0025
+    human_spatial: 1.0
+    vert_offsets: 0.000001
+    lbs_weights: 0.0
+    smplx_betas: 0.00001
+    smplx_transl: 0.00001
+    smplx_global_orient: 0.00001
+    smplx_body_pose: 0.00001
+    smplx_hand_pose: 0.00001

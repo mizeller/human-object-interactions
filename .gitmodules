@@ -1,0 +1,7 @@
+[submodule "datapipeline/submodules/DSINE"]
+	path = datapipeline/submodules/DSINE
+	url = https://github.com/mizeller/DSINE.git
+[submodule "datapipeline/submodules/hloc"]
+	path = datapipeline/submodules/hloc
+	url = https://github.com/zc-alexfan/Hierarchical-Localization.git
+	branch = 428dd10
