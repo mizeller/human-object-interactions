@@ -9,6 +9,7 @@ This repository contains the data pre-processing pipeline for the `3DGS`-based h
 - hand/human-object segmentation masks using [SAM2](https://github.com/facebookresearch/sam2)
 - surface normals using [DSINE](https://github.com/baegwangbin/DSINE)
 - SMPLX poses and camera parameters via MC's `*************` repo
+  - For reference, check out [PromptHMR](https://yufu-wang.github.io/phmr-page/)
 - 6DOF object poses + sparse SfM model using [COLMAP](https://github.com/cvg/Hierarchical-Localization)
 
 The human & object are aligned in a shared canonical space using a simple hand-object alignment optimization.
